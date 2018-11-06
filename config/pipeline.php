@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Psr\Container\ContainerInterface;
-use SergeiKukhariev\ApiSkeleton\ErrorHandlers\NotFoundHandler;
 use Zend\Expressive\Application;
 use Zend\Expressive\Helper\ServerUrlMiddleware;
 use Zend\Expressive\Helper\UrlHelperMiddleware;
@@ -74,5 +73,5 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // At this point, if no Response is returned by any middleware, the
     // NotFoundHandler kicks in; alternately, you can provide other fallback
     // middleware to execute.
-    $app->pipe(NotFoundHandler::class);
+    $app->pipe(\Zend\ProblemDetails\ProblemDetailsNotFoundHandler::class);
 };
