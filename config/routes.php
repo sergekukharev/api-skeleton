@@ -20,4 +20,5 @@ use Zend\Expressive\MiddlewareFactory;
  * $app->route('/contact', App\Handler\ContactHandler::class, ['GET', 'POST', ...], 'contact');
  */
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
+    $app->get('/health', \SergeiKukhariev\ApiSkeleton\Actions\Health\GetHealthAction::class, 'checkHealth');
 };
