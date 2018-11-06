@@ -26,6 +26,9 @@ $aggregator = new ConfigAggregator([
     class_exists(\Zend\Expressive\Swoole\ConfigProvider::class)
         ? \Zend\Expressive\Swoole\ConfigProvider::class
         : function(){ return[]; },
+
+    new PhpFileProvider(realpath(__DIR__) . '/dependency-injection.config.php'),
+
     // Load application config in a pre-defined order in such a way that local settings
     // overwrite global settings. (Loaded as first to last):
     //   - `global.php`
