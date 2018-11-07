@@ -9,10 +9,18 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use SergeiKukhariev\ApiSkeleton\Errors\ClientError;
-use Zend\Diactoros\Response\EmptyResponse;
+use SergeiKukhariev\ApiSkeleton\Errors\NotFoundError;
+use Zend\Diactoros\Response\JsonResponse;
 
 class GetTranslationAction implements RequestHandlerInterface
 {
+    /** @var array */
+    private $db;
+
+    public function __construct()
+    {
+        $this->db = require __DIR__ . '/../../../data/translations.php';
+    }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -24,6 +32,10 @@ class GetTranslationAction implements RequestHandlerInterface
             );
         }
 
-        return new EmptyResponse();
+        if (!array_key_exists($request->getAttribute('translationKey'), $this->db)) {
+            throw new NotFoundError('Not Found', 'Provided translation key was not found');
+        }
+
+        return new JsonResponse($this->db[$request->getAttribute('translationKey')]);
     }
 }

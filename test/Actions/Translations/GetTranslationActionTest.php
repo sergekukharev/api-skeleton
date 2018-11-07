@@ -5,6 +5,7 @@ namespace SergeiKukhariev\ApiSkeleton\Actions\Translations;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Server\RequestHandlerInterface;
 use SergeiKukhariev\ApiSkeleton\Errors\ClientError;
+use SergeiKukhariev\ApiSkeleton\Errors\NotFoundError;
 use Zend\Diactoros\ServerRequest;
 
 class GetTranslationActionTest extends TestCase
@@ -17,7 +18,7 @@ class GetTranslationActionTest extends TestCase
     public function setUp()
     {
         $this->action = new GetTranslationAction();
-        $this->request = (new ServerRequest())->withAttribute('translationKey', 'testKey');
+        $this->request = (new ServerRequest())->withAttribute('translationKey', 'testTranslation');
     }
 
     public function testIsRequestHandler()
@@ -32,5 +33,19 @@ class GetTranslationActionTest extends TestCase
         $this->action->handle($this->request->withoutAttribute('translationKey'));
     }
 
-    //TODO return one of the hardcoded translation key values.
+    public function testReturnsAllPossibleTranslations()
+    {
+        $translationsDb = require __DIR__ . '/../../../data/translations.php';
+
+        $response = $this->action->handle($this->request);
+
+        self::assertEquals($translationsDb['testTranslation'], json_decode($response->getBody(), true));
+    }
+
+    public function testReturnsNotFoundIfKeyIsMissing()
+    {
+        self::expectException(NotFoundError::class);
+
+        $this->action->handle($this->request->withAttribute('translationKey', 'unknown-key'));
+    }
 }
