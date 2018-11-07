@@ -82,9 +82,4 @@ class ClientErrorTest extends TestCase
 
         self::assertEquals(423, $clientError->getStatusCode());
     }
-
-    public function testDefaultStatusCodeIsBadRequest()
-    {
-        self::assertEquals(StatusCodeInterface::STATUS_BAD_REQUEST, $this->error->getStatusCode());
-    }
 }
