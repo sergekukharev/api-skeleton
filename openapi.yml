@@ -1,0 +1,44 @@
+openapi: "3.0"
+info:
+  title: Skeleton API app
+  version: 1.0.0
+paths:
+  /translations/{translationKey}:
+    get:
+      summary: Translations for provided translation key
+      operationId: getTranslations
+      parameters:
+      - name: translationKey
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: translationKey exists, all info about it included
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TranslationKey'
+        '404':
+          description: Translation key not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/problem'
+components:
+  schemas:
+    TranslationKey:
+      properties:
+        translationKey:
+          type: string
+        translations:
+          type: object
+          items:
+            $ref: '#/components/schemas/Translation'
+    Translation:
+      properties:
+        locale:
+          type: string
+        value:
+          type: string
