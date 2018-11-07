@@ -33,6 +33,7 @@ class GetTranslationAction implements RequestHandlerInterface
         }
 
         if (!array_key_exists($request->getAttribute('translationKey'), $this->db)) {
+
             throw new NotFoundError('Not Found', 'Provided translation key was not found');
         }
 

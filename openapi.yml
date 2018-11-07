@@ -13,6 +13,17 @@ paths:
         required: true
         schema:
           type: string
+      - name: filter
+        in: query
+        required: false
+        style: deepObject
+        schema:
+          type: object
+          properties:
+            translations:
+              type: string
+              description: list of locales to get translation for
+              required: false
       responses:
         '200':
           description: translationKey exists, all info about it included
